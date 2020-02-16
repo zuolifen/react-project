@@ -1,0 +1,45 @@
+.header .header-top {
+  height: 40px;
+  border-bottom: 1px solid #008000;
+  text-align: right;
+  line-height: 40px;
+}
+.header .header-top span {
+  margin: 5px;
+}
+.header .header-bottom {
+  height: 40px;
+  display: flex;
+}
+.header .header-bottom .bottom-left {
+  width: 25%;
+  text-align: center;
+  line-height: 40px;
+  font-size: 20px;
+  position: relative;
+}
+.header .header-bottom .bottom-left::before {
+  width: 40px;
+  height: 40px;
+  border: 20px solid white;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  content: '';
+}
+.header .header-bottom .bottom-right {
+  width: 75%;
+  text-align: right;
+  padding-right: 20px;
+  line-height: 40px;
+}
+.header .header-bottom .bottom-right img {
+  width: 30px;
+  height: 20px;
+  margin: 0 10px;
+  display: inline-block;
+}

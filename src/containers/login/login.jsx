@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button ,message} from 'antd';
 import './css/login.less';
-import logo from './img/logo.png'
+import logo from './img/logo.png';
+import {reqLogin} from '../../api/index';
+import {connect} from 'react-redux';
+import check from '../check/check';
+import {createSaveUserInfoAction} from '../../redux/actions/login';
 
+@connect(
+    (state) => ({userInfo:state.userInfo}),
+    {
+        saveUserInfo:createSaveUserInfoAction
+    }
+)
+@Form.create()
+@check
 class Login extends Component {
     passwordValidator = (rule,value,callback) => {
-        console.log(rule,value,callback);
         if(!value){
             callback('密码必须输入')
         }else if(value.length < 4){
@@ -14,16 +25,28 @@ class Login extends Component {
             callback('密码必须小于12位数')
         }else if(!(/^\w+$/.test(value))){
             callback('密码必须是英文、数字或下划线组成')
+        }else{
+            callback()
         }
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err,values) => {
+        this.props.form.validateFields(async(err,values) => {
             if(!err){
-                console.log(values);
+                const {username,password} = values;
+               let result = await reqLogin( username,password);
+               const {status,data,msg} = result
+               if(status ===0){
+                message.success('登录成功！');
+                this.props.saveUserInfo(data);
+
+                this.props.history.replace('/admin');
+                console.log(444);
+               }else{
+                   message.warning(msg);
+               }
             }
-        }
-        )
+        })
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -85,4 +108,4 @@ class Login extends Component {
         )
     }
 }
-export default Form.create({ name: 'normal_login' })(Login);
+export default Login;
